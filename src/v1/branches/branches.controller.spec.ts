@@ -6,6 +6,7 @@ import { CreateBranchDto } from './dto/create-branch.dto.js';
 import { User } from '../../entities/user.entity.js';
 import { BranchesModule } from './branches.module.js';
 import { DataSource } from 'typeorm';
+import { Branch } from '../../entities/branch.entity.js';
 
 describe('BranchesController', () => {
   let controller: BranchesController;
@@ -27,8 +28,7 @@ describe('BranchesController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
-  it('shoulde create a record', async () => {
-    // jest.spyOn(service, 'create')
+  async function generate_owner(){
     const user = new User();
     user.username = 'Josh';
     user.email = 'orz@gmail.com';
@@ -36,8 +36,22 @@ describe('BranchesController', () => {
     user.fullname = 'noname';
     user.phone = '01212124134';
     await user.save();
+    return user; 
+  }
+  it('shoulde create a record', async () => {
+    // jest.spyOn(service, 'create')
+    const user = await generate_owner();
     const createdto: CreateBranchDto = {owner_id:user.id,address: 'Le Dinh Ly'};
     const result = JSON.parse( await controller.create(createdto));
     expect(result.address).toEqual(createdto.address);
+  })
+  it('should delete a record', async()=>{
+    const user = await generate_owner();
+    const branch = new Branch();
+    branch.owner = user;
+    branch.address = "Mock address";
+    await branch.save();
+    const id = branch.id;
+    expect(((await controller.remove(id)).status)).toBeTruthy();
   })
 });

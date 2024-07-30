@@ -24,19 +24,19 @@ import { PaymentDetail } from "./entities/payment_detail.entity.js";
 import { TimeSlot } from "./entities/timeslot.entity.js";
 import { Comment } from "./entities/comment.entity.js";
 const imports = [
-  TypeOrmModule.forFeature([
-    Branch,
-    CourtInfo,
-    User,
-    OrderForm,
-    DefaultPrice,
-    OffSchedules,
-    OpenSchedule,
-    Payment,
-    PaymentDetail,
-    Comment,
-    TimeSlot,
-  ]),
+  // TypeOrmModule.forFeature([
+  //   Branch,
+  //   CourtInfo,
+  //   User,
+  //   OrderForm,
+  //   DefaultPrice,
+  //   OffSchedules,
+  //   OpenSchedule,
+  //   Payment,
+  //   PaymentDetail,
+  //   Comment,
+  //   TimeSlot,
+  // ]),
 ];
 if (process.env.RABBITMQ_MODE === "true") {
   // imports.push(EventMqAppModule);

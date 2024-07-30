@@ -25,11 +25,11 @@ export class BranchesController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.branchesService.findOne(+id);
+    return this.branchesService.findOne(id);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.branchesService.remove(+id);
+    return this.branchesService.remove(id);
   }
 }

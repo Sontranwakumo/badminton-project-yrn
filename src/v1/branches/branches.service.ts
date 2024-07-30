@@ -9,16 +9,7 @@ export class BranchesService {
   constructor() {}
 
   async create(branch_dto:CreateBranchDto){
-    // const user = new User();
-    // user.username = 'Josh';
-    // user.email = 'orz@gmail.com';
-    // user.password = 'dhruv';
-    // user.fullname = 'noname';
-    // user.phone = '01212124134';
-    // await user.save();
-    console.log("create: ");
-    console.log(branch_dto);
-    const user = await User.findOneBy({id:branch_dto.owner_id});
+    const user = (await User.findOneBy({id:branch_dto.owner_id}));
     const branch = new Branch();
     branch.owner = user;
     branch.address = branch_dto.address;
@@ -39,15 +30,24 @@ export class BranchesService {
     return JSON.stringify(court);
   }
 
-  findAll() {
-    return `This action returns all branches`;
+  async findAll() {
+    const branches = await Branch.find();
+    return branches;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} branch`;
+  async findOne(id: string) {
+    const branch = await Branch.findOneBy({id:id.toString()});
+    return branch;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} branch`;
+  async remove(id: string) {
+    try{
+      const branch = await Branch.findOneBy({id:id});
+      await branch.remove();
+      return {status:true};
+    }catch(error){
+      return {status:false};
+      console.log(error);
+    }
   }
 }
