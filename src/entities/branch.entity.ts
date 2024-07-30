@@ -37,4 +37,8 @@ export class Branch extends BaseEntity{
 
   @OneToMany(() => OffSchedules, (offSchedules) => offSchedules.branch)
   offSchedules: OffSchedules[];
+
+  static create_new(user: User){
+    
+  }
 }

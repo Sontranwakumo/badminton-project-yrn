@@ -8,7 +8,7 @@ export class OrderFormsController {
   constructor(private readonly orderFormsService: OrderFormsService) {}
 
   @Post()
-  create(@Body() createOrderFormDto: CreateOrderFormDto) {
+  async create(@Body() createOrderFormDto: CreateOrderFormDto) {
     return this.orderFormsService.create(createOrderFormDto);
   }
 

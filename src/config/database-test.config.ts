@@ -3,18 +3,14 @@ import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 
 import * as entitiesIndex from '../../src/entities/index.js';
-import { BaseEntity } from "typeorm";
-const entities = Object.values(entitiesIndex).filter((entity: any) => BaseEntity.isPrototypeOf(entity));
+import { BaseEntity } from 'typeorm';
+const entities = Object.values(entitiesIndex).filter((entity: any) =>
+  BaseEntity.isPrototypeOf(entity),
+);
 
 @Injectable()
 export class DatabaseTestConfigService implements TypeOrmOptionsFactory {
-  constructor(private readonly configService: ConfigService) {
-    console.log(this.configService.get('db.host'));
-    console.log(this.configService.get('db.port'));
-    console.log(this.configService.get('db.user_name'));
-    console.log(this.configService.get('db.name_test'));
-    console.log(this.configService.get('db.password'));
-  }
+  constructor(private readonly configService: ConfigService) {}
 
   createTypeOrmOptions(): TypeOrmModuleOptions {
     return {
@@ -26,7 +22,7 @@ export class DatabaseTestConfigService implements TypeOrmOptionsFactory {
       password: this.configService.get('db.password'),
       entities: entities,
       synchronize: true,
-      keepConnectionAlive: true
+      keepConnectionAlive: true,
     };
   }
 }

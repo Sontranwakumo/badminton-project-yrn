@@ -57,6 +57,7 @@ curl -v -X PUT https://api.badminton.com/v1/order-forms/153 \
     "book_status": "pending",
     "created_at": "2024-07-29T12:34:56Z",
     "note": "Please confirm the booking as soon as possible.",
+    "price": 80000,
     "payment": {
         "id_payment": 1,
         "status": "pending",
