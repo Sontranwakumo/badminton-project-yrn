@@ -24,10 +24,13 @@ export async function getSynchronizeConnection() {
   const dataSource = new DataSource({
     name: 'default',
     type: 'postgres' as const,
+    username: process.env.DB_USER,
     database: process.env.DB_NAME_TEST,
+    password: process.env.DB_PASSWORD,
     entities: entities as any,
     synchronize: true,
   } as DataSourceOptions);
+  
   await dataSource
     .initialize()
     .then(async (_) => await dataSource.synchronize(true));
@@ -39,7 +42,7 @@ export async function clearDB(dataSource: DataSource) {
   for (const entity of entities) {
     const repository = dataSource.getRepository(entity.name);
     await repository.query(
-      `TRUNCATE ${entity.tableName} RESTART IDENTITY CASCADE;`,
+      `TRUNCATE "${entity.tableName}" RESTART IDENTITY CASCADE;`,
     );
   }
 }

@@ -4,8 +4,6 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { TerminusModule } from "@nestjs/terminus";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { AppController } from './app.controller.js';
-import { AppService } from './app.service.js';
 import { AppLoggerMiddleware } from "./commons/middlewares/app-logger.middleware.js";
 import { BullConfigService } from "./config/bull.config.js";
 import { configuration } from "./config/config.js";
@@ -14,6 +12,7 @@ import { RedisConfigService } from "./config/redis.config.js";
 import { EventMqProducerModule } from "./rabbitmq/eventmq-producer.module.js";
 import { UtilsModule } from "./commons/utils/utils.module.js";
 import { SampleModule } from './v1/sample/sample.module.js';
+import { BranchesModule } from "./v1/branches/branches.module.js";
 
 @Module({
   imports: [
@@ -37,10 +36,11 @@ import { SampleModule } from './v1/sample/sample.module.js';
     TerminusModule,
     EventMqProducerModule,
     UtilsModule,
-    SampleModule
+    SampleModule,
+    BranchesModule
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {

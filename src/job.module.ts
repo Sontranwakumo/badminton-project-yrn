@@ -4,8 +4,6 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { TerminusModule } from "@nestjs/terminus";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { AppController } from './app.controller.js';
-import { AppService } from './app.service.js';
 import { AppLoggerMiddleware } from "./commons/middlewares/app-logger.middleware.js";
 import { BullConfigService } from "./config/bull.config.js";
 import { configuration } from "./config/config.js";
@@ -14,9 +12,34 @@ import { RedisConfigService } from "./config/redis.config.js";
 import { SCRIPTS } from "./scripts/index.js";
 import { EventMqAppModule } from "./rabbitmq/eventmq-app.module.js";
 import { EventMqProducerModule } from "./rabbitmq/eventmq-producer.module.js";
-const imports = [];
+import { CourtInfo } from "./entities/courtinfo.entity.js";
+import { Branch } from "./entities/branch.entity.js";
+import { User } from "./entities/user.entity.js";
+import { OrderForm } from "./entities/orderform.entity.js";
+import { DefaultPrice } from "./entities/default_price.entity.js";
+import { OffSchedules } from "./entities/off_schedule.entity.js";
+import { OpenSchedule } from "./entities/open_schedule.entity.js";
+import { Payment } from "./entities/payment.entity.js";
+import { PaymentDetail } from "./entities/payment_detail.entity.js";
+import { TimeSlot } from "./entities/timeslot.entity.js";
+import { Comment } from "./entities/comment.entity.js";
+const imports = [
+  TypeOrmModule.forFeature([
+    Branch,
+    CourtInfo,
+    User,
+    OrderForm,
+    DefaultPrice,
+    OffSchedules,
+    OpenSchedule,
+    Payment,
+    PaymentDetail,
+    Comment,
+    TimeSlot,
+  ]),
+];
 if (process.env.RABBITMQ_MODE === "true") {
-  imports.push(EventMqAppModule);
+  // imports.push(EventMqAppModule);
 }
 
 @Module({
@@ -42,8 +65,8 @@ if (process.env.RABBITMQ_MODE === "true") {
     EventMqProducerModule,
     ...imports
   ],
-  controllers: [AppController],
-  providers: [AppService, ...SCRIPTS],
+  controllers: [],
+  providers: [...SCRIPTS],
 })
 export class JobModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {

@@ -8,7 +8,13 @@ const entities = Object.values(entitiesIndex).filter((entity: any) => BaseEntity
 
 @Injectable()
 export class DatabaseTestConfigService implements TypeOrmOptionsFactory {
-  constructor(private readonly configService: ConfigService) {}
+  constructor(private readonly configService: ConfigService) {
+    console.log(this.configService.get('db.host'));
+    console.log(this.configService.get('db.port'));
+    console.log(this.configService.get('db.user_name'));
+    console.log(this.configService.get('db.name_test'));
+    console.log(this.configService.get('db.password'));
+  }
 
   createTypeOrmOptions(): TypeOrmModuleOptions {
     return {
