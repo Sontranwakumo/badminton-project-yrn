@@ -13,6 +13,7 @@ import { EventMqProducerModule } from "./rabbitmq/eventmq-producer.module.js";
 import { UtilsModule } from "./commons/utils/utils.module.js";
 import { SampleModule } from './v1/sample/sample.module.js';
 import { BranchesModule } from "./v1/branches/branches.module.js";
+import { OrderFormsModule } from './v1/order-forms/order-forms.module.js';
 
 @Module({
   imports: [
@@ -37,7 +38,8 @@ import { BranchesModule } from "./v1/branches/branches.module.js";
     EventMqProducerModule,
     UtilsModule,
     SampleModule,
-    BranchesModule
+    BranchesModule,
+    OrderFormsModule
   ],
   controllers: [],
   providers: [],

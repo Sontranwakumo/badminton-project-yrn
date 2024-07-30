@@ -27,8 +27,11 @@ export class OrderForm extends BaseEntity{
   @JoinColumn({ name: 'sender_id' })
   sender: Relation<User>;
 
+  @Column()
+  court_id: string;
+
   @ManyToOne(() => CourtInfo)
-  @JoinColumn()
+  @JoinColumn({name:'court_id'})
   court: Relation<CourtInfo>;
 
   @Column({
