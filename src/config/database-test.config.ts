@@ -10,7 +10,8 @@ const entities = Object.values(entitiesIndex).filter((entity: any) =>
 
 @Injectable()
 export class DatabaseTestConfigService implements TypeOrmOptionsFactory {
-  constructor(private readonly configService: ConfigService) {}
+  constructor(private readonly configService: ConfigService) {
+  }
 
   createTypeOrmOptions(): TypeOrmModuleOptions {
     return {

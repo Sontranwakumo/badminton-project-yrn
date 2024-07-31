@@ -10,7 +10,8 @@ const __dirname = path.dirname(__filename);
 
 @Injectable()
 export class DatabaseConfigService implements TypeOrmOptionsFactory {
-  constructor(private readonly configService: ConfigService) {}
+  constructor(private readonly configService: ConfigService) {
+  }
 
   createTypeOrmOptions(): TypeOrmModuleOptions {
     return {
