@@ -14,7 +14,7 @@ export class OrderFormsService {
     // check valid time
     {
       // check valid open schedule
-        
+      
       // check valid off schedule
 
       // check valid time slot from defaultprices
@@ -30,11 +30,11 @@ export class OrderFormsService {
     order.book_status = BookStatus.PENDING;
     order.note = createOrderFormDto.note;
     const timeslot = new TimeSlot();
-    timeslot.court = court;
     timeslot.start_time = createOrderFormDto.start_time;
     timeslot.end_time = createOrderFormDto.end_time;
     timeslot.match_date = createOrderFormDto.booking_date;
-    timeslot.order = order;
+    timeslot.court_id = court.id;
+    await timeslot.save();
     order.timeslots = [timeslot];
     order.save();
     console.log(order)

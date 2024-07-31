@@ -15,6 +15,9 @@ export class TimeSlot extends BaseEntity{
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column()
+  court_id: string;
+
   @ManyToOne(() => CourtInfo)
   @JoinColumn({ name: 'court_id' })
   court: Relation<CourtInfo>;

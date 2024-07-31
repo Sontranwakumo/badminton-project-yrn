@@ -15,6 +15,7 @@ import { Branch } from '../../entities/branch.entity.js';
 import { CourtInfo } from '../../entities/courtinfo.entity.js';
 import { INestApplication } from '@nestjs/common';
 import { UserRole } from '../../commons/enums/UserRole.enum.js';
+import { TimeSlot } from '../../entities/timeslot.entity.js';
 
 describe('OrderFormsController', () => {
   let app: INestApplication;
@@ -30,9 +31,9 @@ describe('OrderFormsController', () => {
   });
 
   afterEach(async () => {
-    await clearDB(datasource);
+    // await clearDB(datasource);
   });
-  describe('POST v1/order-forms', () => {
+  describe('POST order-forms', () => {
     let user: User, admin: User, court: CourtInfo, branch: Branch;
     /*
       Initialize necessary data to test order.
@@ -84,7 +85,8 @@ describe('OrderFormsController', () => {
         const response = await request(app.getHttpServer())
         .post('/order-forms')
         .send(dto)
-        
+        expect(response.status).toEqual(201);
+        expect(response.body)
       });
     });
     describe('Invalid', () => {

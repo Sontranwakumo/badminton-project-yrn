@@ -9,6 +9,7 @@ export class OrderFormsController {
 
   @Post()
   async create(@Body() createOrderFormDto: CreateOrderFormDto) {
+    console.log("post order-forms");
     return this.orderFormsService.create(createOrderFormDto);
   }
 

@@ -43,8 +43,16 @@ curl -v -X PUT https://api.badminton.com/v1/order-forms/153 \
     "court_id": "court456",
     "note": "Please confirm the booking as soon as possible.",
     "booking_date": "01-08-2024",
-    "start_time": "13:00",
-    "end_time": "17:00",
+    "booking_time":[
+        {
+            "start_time": "13:00",
+            "end_time": "17:00",
+        },
+        {
+            "start_time": "8:00",
+            "end_time": "10:00",
+        }
+    ]
 }' 
 ```
 
