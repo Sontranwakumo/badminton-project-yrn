@@ -8,7 +8,7 @@ import {
   Relation,
 } from 'typeorm';
 import { User } from './user.entity.js';
-import { CourtInfo } from './courtinfo.entity.js';
+import { CourtInfo } from './court_info.entity.js';
 
 @Entity()
 export class Comment extends BaseEntity {

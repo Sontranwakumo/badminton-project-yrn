@@ -8,7 +8,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { CourtInfo } from './courtinfo.entity.js';
+import { CourtInfo } from './court_info.entity.js';
 import { DefaultPrice } from './default_price.entity.js';
 import { OffSchedules } from './off_schedule.entity.js';
 import { OpenSchedule } from './open_schedule.entity.js';
@@ -41,7 +41,4 @@ export class Branch extends BaseEntity{
   @OneToMany(() => OffSchedules, (offSchedules) => offSchedules.branch)
   offSchedules: OffSchedules[];
 
-  static create_new(user: User){
-    
-  }
 }

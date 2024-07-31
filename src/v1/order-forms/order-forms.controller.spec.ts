@@ -12,13 +12,13 @@ import {
 } from '../../../test/utils/utils.js';
 import { OrderFormsModule } from './order-forms.module.js';
 import { instanceToInstance } from 'class-transformer';
-import { Brackets, DataSource } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { User } from '../../entities/user.entity.js';
 import { Branch } from '../../entities/branch.entity.js';
-import { CourtInfo } from '../../entities/courtinfo.entity.js';
+import { CourtInfo } from '../../entities/court_info.entity.js';
 import { INestApplication } from '@nestjs/common';
 import { UserRole } from '../../commons/enums/UserRole.enum.js';
-
+import { fa, faker } from '@faker-js/faker';
 describe('OrderFormsController', () => {
   let app: INestApplication;
   let datasource: DataSource;
@@ -30,8 +30,6 @@ describe('OrderFormsController', () => {
     app = module.createNestApplication();
     await app.init();
   });
-
-
   describe('POST /v1/order-forms', () => {
     let user: User, admin: User, court: CourtInfo, branch: Branch, dto: any;
     /*
@@ -40,14 +38,14 @@ describe('OrderFormsController', () => {
     */
     beforeEach(async () => {
       //initialize sender user
-      user = await getRandomUser(UserRole.USER)
+      user = await getRandomUser(UserRole.USER);
       //initialize admin
       admin = await getRandomUser(UserRole.ADMIN);
       //initialize branch and court
       const genBranch = await createRandomBranch(admin);
       branch = genBranch.branch;
       court = genBranch.courts[0];
-      dto = await createRandomOrderDto(user,court);
+      dto = await createRandomOrderDto(user, court);
     });
     afterEach(async () => {
       await clearDB(datasource);
@@ -55,45 +53,114 @@ describe('OrderFormsController', () => {
 
     describe('Valid body request', () => {
       it('Should return created order forms ', async () => {
-
         const response = await request(app.getHttpServer())
-        .post('/v1/order-forms')
-        .send(dto)
-        console.log(response.body);
+          .post('/v1/order-forms')
+          .send(dto);
         expect(response.status).toEqual(201);
-        expect(response.body)
+        expect(response.body);
       });
     });
     describe('Invalid', () => {
       describe('Invalid sender id', () => {
         describe('Sender parameter is null', () => {
-          it('Should return 404 and an error message for user that does not exist', async () => {
-            const wdto = instanceToInstance(dto);
-            wdto.sender_id = null;
-              const response = await request(app.getHttpServer())
+          it('Should return 400 and an error message for user that does not exist', async () => {
+            const fail_dto = {
+              ...dto,
+              sender_id: null,
+            };
+            const response = await request(app.getHttpServer())
               .post('/v1/order-forms')
-              .send(dto)
-              expect(response.status).toEqual(400);
+              .send(fail_dto);
+            expect(response.status).toEqual(400);
+            expect(response.body.message).toEqual('User can not null');
           });
         });
         describe('Invalid format sender id', () => {
-          it('Should return 400 and an error message user ID is not uuid format', () => {});
+          it('Should return 400 and an error message user ID is not uuid format', async () => {
+            const fail_dto = {
+              ...dto,
+              sender_id: faker.string.fromCharacters('wertyuiodsgasvp', {
+                min: 5,
+                max: 10,
+              }),
+            };
+            const response = await request(app.getHttpServer())
+              .post('/v1/order-forms')
+              .send(fail_dto);
+            expect(response.status).toEqual(400);
+            expect(response.body.message).toEqual('Invalid userid format');
+          });
         });
         describe('Nonexistent user', () => {
-          it('Should return 404 and an error message for user that does not exist', () => {});
+          it('Should return 400 and an error message for user that does not exist', async () => {
+            const fail_dto = {
+              ...dto,
+              sender_id: faker.string.uuid(),
+            };
+            const response = await request(app.getHttpServer())
+              .post('/v1/order-forms')
+              .send(fail_dto);
+            expect(response.status).toEqual(400);
+            expect(response.body.message).toEqual('User not be found');
+          });
         });
       });
       describe('Invalid court id', () => {
-        describe('Court id parameter is null or not exist', () => {
-          it('Should return 404 and an error message for court id does not exist', () => {});
+        describe('Court id parameter is null', () => {
+          it('Should return 400 and an error message for court id can not null', async () => {
+            const fail_dto = {
+              ...dto,
+              court_id: null,
+            };
+            const response = await request(app.getHttpServer())
+              .post('/v1/order-forms')
+              .send(fail_dto);
+            expect(response.status).toEqual(400);
+            expect(response.body.message).toEqual('Court can not null');
+          });
         });
         describe('Invalid court id format', () => {
-          it('Should return 400 and an error message for court id format is not uuid', () => {});
+          it('Should return 400 and an error message for court id is invalid format', async () => {
+            const fail_dto = {
+              ...dto,
+              court_id: faker.string.fromCharacters(
+                'qwertyuiopsdfghjklzxcvbnm',
+                { min: 5, max: 10 },
+              ),
+            };
+            const response = await request(app.getHttpServer())
+              .post('/v1/order-forms')
+              .send(fail_dto);
+            expect(response.status).toEqual(400);
+            expect(response.body.message).toEqual('Invalid courtid format');
+          });
+        });
+        describe('Court id is not exist', () => {
+          it('Should return 400 and an error message for court id is not exist', async () => {
+            const fail_dto = {
+              ...dto,
+              court_id: faker.string.uuid(),
+            };
+            const response = await request(app.getHttpServer())
+              .post('/v1/order-forms')
+              .send(fail_dto);
+            expect(response.status).toEqual(400);
+            expect(response.body.message).toEqual('Court not be found');
+          });
         });
       });
       describe('Invalid time slot', () => {
         describe('Not an active date of branch', () => {
-          it('Should return 409 and an error message not valid date', () => {});
+          it('Should return 409 and an error message not valid date', async () => {
+            const fail_dto = {
+              ...dto,
+            };
+            const response = await request(app.getHttpServer())
+              .post('/v1/order-forms')
+              .send(fail_dto);
+            expect(response.status).toEqual(400);
+            expect(response.body.message).toEqual('Court not be found');
+          });
         });
         describe('Invalid start time', () => {
           it('Should return 406 and an error message not valid start time', () => {});

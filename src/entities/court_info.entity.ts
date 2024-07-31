@@ -1,4 +1,4 @@
-import { CourtStatus } from '../../src/commons/enums/CourtStatus.enum.js';
+import { CourtStatus } from '../commons/enums/CourtStatus.enum.js';
 import {
   BaseEntity,
   Column,

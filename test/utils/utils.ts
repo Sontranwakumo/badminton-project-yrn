@@ -69,7 +69,7 @@ export async function getRandomUser(role = UserRole.USER){
   user.email = faker.internet.email();
   user.password = faker.internet.password();
   user.fullname = faker.person.fullName();
-  user.phone = faker.phone.number()
+  user.phone = faker.phone.imei();
   user.role = role;
   await user.save();
   return user;
@@ -79,6 +79,7 @@ export async function createRandomBranch(user: User) {
     // generate new branch
     const branch = new Branch();
     branch.owner = user;
+    branch.name = 'brancha';
     branch.address = faker.location.streetAddress();
     await branch.save();
     let courts: CourtInfo[] = [];
@@ -104,7 +105,6 @@ export async function createRandomOrderDto(user:User,court:CourtInfo) {
     start_time: '13:00',
     end_time: '17:00'
   }
-  console.log(order);
   return order;
 }
 

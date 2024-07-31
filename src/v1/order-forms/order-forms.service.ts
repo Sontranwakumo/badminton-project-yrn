@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { CreateOrderFormDto } from './dto/create-order-form.dto.js';
 import { UpdateOrderFormDto } from './dto/update-order-form.dto.js';
-import { OrderForm } from '../../entities/orderform.entity.js';
+import { OrderForm } from '../../entities/order_form.entity.js';
 import { User } from '../../entities/user.entity.js';
-import { CourtInfo } from '../../entities/courtinfo.entity.js';
+import { CourtInfo } from '../../entities/court_info.entity.js';
 import { BookStatus } from '../../commons/enums/BookStatus.enum.js';
 import { TimeSlot } from '../../entities/timeslot.entity.js';
-import { InvalidUserException } from '../../commons/exceptions/InvalidUser.exceptions.js';
+import { InvalidUserException } from '../../commons/exceptions/InvalidUser.exception.js';
+import { InvalidCourtException } from '../../commons/exceptions/InvalidCourt.exception.js';
+import { error } from 'console';
 
 @Injectable()
 export class OrderFormsService {
@@ -14,22 +16,35 @@ export class OrderFormsService {
     // check valid time
     {
       // check valid open schedule
-      
       // check valid off schedule
-
       // check valid time slot from defaultprices
-
       // check time slot from existed time slot of the courtId
-
     }
     // Create new form
     const order = new OrderForm();
-    const sender = await User.findOneBy({id:createOrderFormDto.sender_id});
-    if (sender==null){
-      throw new InvalidUserException("User not be found");
+    if (!createOrderFormDto.sender_id) {
+      throw new InvalidUserException('User can not null');
+    }
+    if (!createOrderFormDto.court_id) {
+      throw new InvalidCourtException('Court can not null');
+    }
+    const sender = await User.findOneBy({
+      id: createOrderFormDto.sender_id,
+    }).catch((error) => {
+      throw new InvalidUserException('Invalid userid format');
+    });
+    if (!sender) {
+      throw new InvalidUserException('User not be found');
     }
     order.sender = sender;
-    const court = await CourtInfo.findOneBy({id:createOrderFormDto.court_id});
+    const court = await CourtInfo.findOneBy({
+      id: createOrderFormDto.court_id,
+    }).catch((error) => {
+      throw new InvalidCourtException('Invalid courtid format');
+    })
+    if (!court) {
+      throw new InvalidCourtException('Court not be found');
+    }
     order.court = court;
     order.book_status = BookStatus.PENDING;
     order.note = createOrderFormDto.note;
@@ -41,7 +56,7 @@ export class OrderFormsService {
     await timeslot.save();
     order.timeslots = [timeslot];
     order.save();
-    console.log(order)
+    // console.log(order)
     return order;
   }
 
@@ -53,7 +68,7 @@ export class OrderFormsService {
   }
 
   async findOne(id: number) {
-    const orderforms = await OrderForm.findOneBy({id:id});
+    const orderforms = await OrderForm.findOneBy({ id: id });
     return orderforms;
   }
 

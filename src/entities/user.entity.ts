@@ -7,7 +7,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { OrderForm } from './orderform.entity.js';
+import { OrderForm } from './order_form.entity.js';
 import { UserRole } from '../../src/commons/enums/UserRole.enum.js';
 
 @Entity()

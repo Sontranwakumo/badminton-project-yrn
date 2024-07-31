@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCourtDto } from './dto/create-court.dto.js';
-import { CourtInfo } from '../../../src/entities/courtinfo.entity.js';
+import { CourtInfo } from '../../entities/court_info.entity.js';
 import { CreateBranchDto } from './dto/create-branch.dto.js';
 import { Branch } from '../../../src/entities/branch.entity.js';
 import { User } from '../../../src/entities/user.entity.js';
@@ -8,11 +8,11 @@ import { User } from '../../../src/entities/user.entity.js';
 export class BranchesService {
   constructor() {}
 
-  async create(branch_dto:CreateBranchDto){
-    const user = (await User.findOneBy({id:branch_dto.owner_id}));
+  async create(branchDto:CreateBranchDto){
+    const user = (await User.findOneBy({id:branchDto.owner_id}));
     const branch = new Branch();
     branch.owner = user;
-    branch.address = branch_dto.address;
+    branch.address = branchDto.address;
     await branch.save();
     return JSON.stringify(branch);
   }
