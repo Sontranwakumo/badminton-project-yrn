@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { DefaultPriceService } from './default_price.service';
+import { DefaultPriceService } from './default_price.service.js';
 
 describe('DefaultPriceService', () => {
   let service: DefaultPriceService;

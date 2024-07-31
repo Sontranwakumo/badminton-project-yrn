@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { OffScheduleService } from './off_schedule.service';
+import { OffScheduleService } from './off_schedule.service.js';
 
 describe('OffScheduleService', () => {
   let service: OffScheduleService;

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateOffScheduleDto } from './dto/create-off-schedule.dto';
-import { Branch, OffSchedules } from '../../entities';
+import { CreateOffScheduleDto } from './dto/create-off-schedule.dto.js';
+import { Branch, OffSchedules } from '../../entities/index.js';
 import { MoreThan } from 'typeorm';
 @Injectable()
 export class OffScheduleService {

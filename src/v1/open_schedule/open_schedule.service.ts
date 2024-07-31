@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { DayOfWeek } from '../../commons/enums/DayOfWeek.enum';
-import { Branch, OpenSchedule } from '../../entities';
+import { DayOfWeek } from '../../commons/enums/DayOfWeek.enum.js';
+import { Branch, OpenSchedule } from '../../entities/index.js';
 
 @Injectable()
 export class OpenScheduleService {

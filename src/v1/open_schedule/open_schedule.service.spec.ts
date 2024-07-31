@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { OpenScheduleService } from './open_schedule.service';
-import { IMPORT_MODULES } from '../../../test/utils/utils';
-import { OpenScheduleModule } from './open_schedule.module';
+import { OpenScheduleService } from './open_schedule.service.js';
+import { IMPORT_MODULES } from '../../../test/utils/utils.js';
+import { OpenScheduleModule } from './open_schedule.module.js';
 
 describe('OpenScheduleService', () => {
   let service: OpenScheduleService;
