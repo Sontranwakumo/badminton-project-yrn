@@ -19,6 +19,9 @@ export class Branch extends BaseEntity{
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column({unique: true})
+  name: string;
+
   @OneToOne(() => User)
   @JoinColumn({ name: 'owner_id' })
   owner: User;

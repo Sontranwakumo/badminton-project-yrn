@@ -17,7 +17,7 @@ export class CourtInfo extends BaseEntity {
   id?: string;
 
   @Column()
-  name_of_court: string;
+  name: string;
 
   @Column()
   description: string;

@@ -7,6 +7,11 @@ import { TestingModule } from "@nestjs/testing";
 import { DatabaseTestConfigService } from "../../src/config/database-test.config.js";
 
 import * as entitiesIndex from '../../src/entities/index.js';
+import { UserRole } from "../../src/commons/enums/UserRole.enum.js";
+import { Branch, CourtInfo, User } from "../../src/entities/index.js";
+import { fa, faker } from "@faker-js/faker";
+import { CreateOrderFormDto } from "src/v1/order-forms/dto/create-order-form.dto.js";
+import { format } from 'date-fns';
 const entities = Object.values(entitiesIndex).filter((entity: any) => BaseEntity.isPrototypeOf(entity));
 
 export const IMPORT_MODULES = [
@@ -56,4 +61,54 @@ export function createNestApplication(module: TestingModule): INestApplication {
   app.useGlobalPipes(new ValidationPipe());
 
   return app;
+}
+
+export async function getRandomUser(role = UserRole.USER){
+  const user = new User();
+  user.username = faker.internet.userName();
+  user.email = faker.internet.email();
+  user.password = faker.internet.password();
+  user.fullname = faker.person.fullName();
+  user.phone = faker.phone.number()
+  user.role = role;
+  await user.save();
+  return user;
+}
+export async function createRandomBranch(user: User) {
+  if (user.role == UserRole.ADMIN){
+    // generate new branch
+    const branch = new Branch();
+    branch.owner = user;
+    branch.address = faker.location.streetAddress();
+    await branch.save();
+    let courts: CourtInfo[] = [];
+    for (let i: number = 1; i<4; i++){
+      const court = new CourtInfo();
+      court.branch = branch;
+      court.id_branch = branch.id;
+      court.description = `Sân số ${i}`;
+      court.name = `San${i}`;
+      await court.save();
+      courts.push(court);
+    }
+    return {branch, courts}
+  }
+}
+
+export async function createRandomOrderDto(user:User,court:CourtInfo) {
+  const order:CreateOrderFormDto = {
+    sender_id : user.id,
+    court_id : court.id,
+    note: faker.commerce.productDescription(),
+    booking_date: format(faker.date.future(),'yyyy-MM-dd'),
+    start_time: '13:00',
+    end_time: '17:00'
+  }
+  console.log(order);
+  return order;
+}
+
+export async function createRandomOrder(user:User,court:CourtInfo) {
+  const dto = createRandomOrderDto(user,court);
+    
 }

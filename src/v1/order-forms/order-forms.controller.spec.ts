@@ -5,6 +5,9 @@ import { OrderFormsService } from './order-forms.service.js';
 import {
   IMPORT_MODULES,
   clearDB,
+  createRandomBranch,
+  createRandomOrderDto,
+  getRandomUser,
   getSynchronizeConnection,
 } from '../../../test/utils/utils.js';
 import { OrderFormsModule } from './order-forms.module.js';
@@ -15,12 +18,10 @@ import { Branch } from '../../entities/branch.entity.js';
 import { CourtInfo } from '../../entities/courtinfo.entity.js';
 import { INestApplication } from '@nestjs/common';
 import { UserRole } from '../../commons/enums/UserRole.enum.js';
-import { TimeSlot } from '../../entities/timeslot.entity.js';
 
 describe('OrderFormsController', () => {
   let app: INestApplication;
   let datasource: DataSource;
-  let catsService = { findAll: () => ['test'] };
   beforeAll(async () => {
     datasource = await getSynchronizeConnection();
     const module: TestingModule = await Test.createTestingModule({
@@ -30,61 +31,35 @@ describe('OrderFormsController', () => {
     await app.init();
   });
 
-  afterEach(async () => {
-    // await clearDB(datasource);
-  });
-  describe('POST order-forms', () => {
-    let user: User, admin: User, court: CourtInfo, branch: Branch;
+
+  describe('POST /v1/order-forms', () => {
+    let user: User, admin: User, court: CourtInfo, branch: Branch, dto: any;
     /*
       Initialize necessary data to test order.
       Initialize user, admin, court, branch.
     */
     beforeEach(async () => {
       //initialize sender user
-      user = new User();
-      user.username = 'Josh';
-      user.email = 'orz@gmail.com';
-      user.password = 'dhruv';
-      user.fullname = 'Josh Johan';
-      user.phone = '0121224134';
-      await user.save();
-      console.log(user);
+      user = await getRandomUser(UserRole.USER)
       //initialize admin
-      admin = new User();
-      admin.username = 'admin';
-      admin.email = 'admin@badminton.com';
-      admin.password = 'dhruv';
-      admin.fullname = 'Son tran viet';
-      admin.role = UserRole.ADMIN;
-      admin.phone = '0796688018';
-      await admin.save();
-      //initialize branch
-      branch = new Branch();
-      branch.owner = admin;
-      branch.address = 'Le Dinh Ly, Da Nang';
-      await branch.save();
-      //initialize court
-      court = new CourtInfo();
-      court.branch = branch;
-      court.id_branch = branch.id;
-      court.description = 'Sân trong nhà, gần khán đài';
-      court.name_of_court = 'San 1';
-      await court.save();
+      admin = await getRandomUser(UserRole.ADMIN);
+      //initialize branch and court
+      const genBranch = await createRandomBranch(admin);
+      branch = genBranch.branch;
+      court = genBranch.courts[0];
+      dto = await createRandomOrderDto(user,court);
+    });
+    afterEach(async () => {
+      await clearDB(datasource);
     });
 
-    describe.only('Valid body request', () => {
+    describe('Valid body request', () => {
       it('Should return created order forms ', async () => {
-        const dto = {
-          sender_id: user.id,
-          court_id: court.id,
-          note: 'Please confirm the booking as soon as possible.',
-          booking_date: '01-08-2024',
-          start_time: '13:00',
-          end_time: '17:00',
-        };
+
         const response = await request(app.getHttpServer())
-        .post('/order-forms')
+        .post('/v1/order-forms')
         .send(dto)
+        console.log(response.body);
         expect(response.status).toEqual(201);
         expect(response.body)
       });
@@ -93,14 +68,12 @@ describe('OrderFormsController', () => {
       describe('Invalid sender id', () => {
         describe('Sender parameter is null', () => {
           it('Should return 404 and an error message for user that does not exist', async () => {
-            // const wdto = instanceToInstance(dto);
-            // wdto.sender_id = null;
-            // try {
-            //   await controller.create(wdto);
-            // } catch (error) {
-            //   expect(error.status).toBe(404);
-            //   expect(error.message).toBe('');
-            // }
+            const wdto = instanceToInstance(dto);
+            wdto.sender_id = null;
+              const response = await request(app.getHttpServer())
+              .post('/v1/order-forms')
+              .send(dto)
+              expect(response.status).toEqual(400);
           });
         });
         describe('Invalid format sender id', () => {

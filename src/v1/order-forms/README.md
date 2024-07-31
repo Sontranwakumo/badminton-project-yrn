@@ -25,7 +25,7 @@ Court ID which order form target.
 Note of sender to approver of the order form.
 
 **booking_date** *string*
-Date of booking, format type `DD-MM-YYYY`.
+Date of booking, format type `YYYY-MM-DD`.
 
 **start_time** *string*
 Start time of booking, It have to be suite one of `start_time` of time slots. Format type `HH:mm`
@@ -42,17 +42,9 @@ curl -v -X PUT https://api.badminton.com/v1/order-forms/153 \
     "sender_id": "user123",
     "court_id": "court456",
     "note": "Please confirm the booking as soon as possible.",
-    "booking_date": "01-08-2024",
-    "booking_time":[
-        {
-            "start_time": "13:00",
-            "end_time": "17:00",
-        },
-        {
-            "start_time": "8:00",
-            "end_time": "10:00",
-        }
-    ]
+    "booking_date": "2024-08-20",
+    "start_time": "13:00",
+    "end_time": "17:00",
 }' 
 ```
 

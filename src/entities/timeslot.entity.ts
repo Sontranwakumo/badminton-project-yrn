@@ -12,8 +12,8 @@ import { OrderForm } from './orderform.entity.js';
 
 @Entity()
 export class TimeSlot extends BaseEntity{
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column()
   court_id: string;

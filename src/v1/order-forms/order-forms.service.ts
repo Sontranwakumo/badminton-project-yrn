@@ -4,9 +4,9 @@ import { UpdateOrderFormDto } from './dto/update-order-form.dto.js';
 import { OrderForm } from '../../entities/orderform.entity.js';
 import { User } from '../../entities/user.entity.js';
 import { CourtInfo } from '../../entities/courtinfo.entity.js';
-import { assert, time, timeStamp } from 'console';
 import { BookStatus } from '../../commons/enums/BookStatus.enum.js';
 import { TimeSlot } from '../../entities/timeslot.entity.js';
+import { InvalidUserException } from '../../commons/exceptions/InvalidUser.exceptions.js';
 
 @Injectable()
 export class OrderFormsService {
@@ -19,11 +19,15 @@ export class OrderFormsService {
 
       // check valid time slot from defaultprices
 
-      // check time slot from existed time slot
+      // check time slot from existed time slot of the courtId
 
     }
+    // Create new form
     const order = new OrderForm();
     const sender = await User.findOneBy({id:createOrderFormDto.sender_id});
+    if (sender==null){
+      throw new InvalidUserException("User not be found");
+    }
     order.sender = sender;
     const court = await CourtInfo.findOneBy({id:createOrderFormDto.court_id});
     order.court = court;
@@ -41,12 +45,16 @@ export class OrderFormsService {
     return order;
   }
 
-  findAll() {
-    return `This action returns all orderForms`;
+  async findAll() {
+    //return all orderForms
+    const orderforms = await OrderForm.find();
+
+    return orderforms;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} orderForm`;
+  async findOne(id: number) {
+    const orderforms = await OrderForm.findOneBy({id:id});
+    return orderforms;
   }
 
   update(id: number, updateOrderFormDto: UpdateOrderFormDto) {
