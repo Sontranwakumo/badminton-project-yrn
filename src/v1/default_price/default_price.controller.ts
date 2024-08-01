@@ -8,22 +8,24 @@ import {
   Delete,
 } from '@nestjs/common';
 import { DefaultPriceService } from './default_price.service.js';
+import { UpdateDefaultPriceDto } from './dto/update-default-price.dto.js';
 
-@Controller('v1/branches/:idBranch/default-prices')
+@Controller('v1/branches/:nameBranch/default-prices')
 export class DefaultPriceController {
-  constructor(@Param('idBranch') idBranch: string, private readonly  defaulPriceService: DefaultPriceService) {
-    defaulPriceService.setIdBranch(idBranch);
-  }
+  constructor(private readonly defaulPriceService: DefaultPriceService) {}
 
   @Get()
-  findAllWithBranch(@Param('idBranch') idBranch: string){
-    console.log(`Hello ${idBranch}`);
-    return this.defaulPriceService.findAllWithBranch();
+  findAll(@Param('nameBranch') nameBranch: string) {
+    console.log(`Hello ${nameBranch}`);
+    return this.defaulPriceService.findAllWithBranch(nameBranch);
   }
 
-  @Post()
-  async create() {
-    // console.log("post order-forms");s
+  @Patch()
+  update(
+    @Param('nameBranch') idBranch: string,
+    @Body() updateDefaultPriceDto: UpdateDefaultPriceDto,
+  ) {
+    console.log(updateDefaultPriceDto);
+    return this.defaulPriceService.update(idBranch, updateDefaultPriceDto);
   }
-
 }
