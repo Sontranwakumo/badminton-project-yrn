@@ -46,7 +46,8 @@ import { DefaultPriceModule } from './v1/default_price/default_price.module.js';
     BranchesModule,
     OrderFormsModule,
     OffScheduleModule,
-    OpenScheduleModule
+    OpenScheduleModule,
+    DefaultPriceModule
   ],
   controllers: [],
   providers: [],
