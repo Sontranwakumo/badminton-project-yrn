@@ -3,7 +3,7 @@ import { error } from "console";
 
 
 export class InvalidUserException extends HttpException{
-    constructor(message = "invalid_user_exception", data = {}){
+    constructor(message = "Invalid user exception", data = {}){
         super(
             {
                 message:message,

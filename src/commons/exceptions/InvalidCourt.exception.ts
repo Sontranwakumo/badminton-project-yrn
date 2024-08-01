@@ -3,7 +3,7 @@ import { error } from "console";
 
 
 export class InvalidCourtException extends HttpException{
-    constructor(message = "invalid_court_exception", data = {}){
+    constructor(message = "Invalid court exception", data = {}){
         super(
             {
                 message:message,

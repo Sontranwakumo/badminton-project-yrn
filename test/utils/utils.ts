@@ -44,12 +44,15 @@ export async function getSynchronizeConnection() {
 
 export async function clearDB(dataSource: DataSource) {
   const entities = dataSource.entityMetadatas;
-  for (const entity of entities) {
+
+  const truncatePromises = entities.map(entity => {
     const repository = dataSource.getRepository(entity.name);
-    await repository.query(
-      `TRUNCATE "${entity.tableName}" RESTART IDENTITY CASCADE;`,
+    return repository.query(
+      `TRUNCATE "${entity.tableName}" RESTART IDENTITY CASCADE;`
     );
-  }
+  });
+
+  await Promise.all(truncatePromises);
 }
 
 export function createNestApplication(module: TestingModule): INestApplication {
