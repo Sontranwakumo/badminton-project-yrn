@@ -7,13 +7,16 @@ import {
   BaseEntity,
   Relation,
 } from 'typeorm';
-import { CourtInfo } from './courtinfo.entity.js';
-import { OrderForm } from './orderform.entity.js';
+import { CourtInfo } from './court_info.entity.js';
+import { OrderForm } from './order_form.entity.js';
 
 @Entity()
 export class TimeSlot extends BaseEntity{
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
+  court_id: string;
 
   @ManyToOne(() => CourtInfo)
   @JoinColumn({ name: 'court_id' })

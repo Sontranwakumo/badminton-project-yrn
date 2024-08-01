@@ -10,10 +10,10 @@ import {
   Relation,
 } from 'typeorm';
 import { User } from './user.entity.js';
-import { CourtInfo } from './courtinfo.entity.js';
+import { CourtInfo } from './court_info.entity.js';
 import { Payment } from './payment.entity.js';
 import { TimeSlot } from './timeslot.entity.js';
-import { BookStatus } from '../../src/commons/enums/BookStatus.enum.js';
+import { BookStatus } from '../commons/enums/BookStatus.enum.js';
 
 @Entity()
 export class OrderForm extends BaseEntity{
@@ -27,8 +27,11 @@ export class OrderForm extends BaseEntity{
   @JoinColumn({ name: 'sender_id' })
   sender: Relation<User>;
 
+  @Column()
+  court_id: string;
+
   @ManyToOne(() => CourtInfo)
-  @JoinColumn()
+  @JoinColumn({name:'court_id'})
   court: Relation<CourtInfo>;
 
   @Column({

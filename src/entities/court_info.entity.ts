@@ -1,4 +1,4 @@
-import { CourtStatus } from '../../src/commons/enums/CourtStatus.enum.js';
+import { CourtStatus } from '../commons/enums/CourtStatus.enum.js';
 import {
   BaseEntity,
   Column,
@@ -17,7 +17,7 @@ export class CourtInfo extends BaseEntity {
   id?: string;
 
   @Column()
-  name_of_court: string;
+  name: string;
 
   @Column()
   description: string;
