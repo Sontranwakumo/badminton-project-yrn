@@ -32,4 +32,6 @@ export class BranchesController {
   remove(@Param('id') id: string) {
     return this.branchesService.remove(id);
   }
+
+  // get branch's schedule. branch/:id/schedule
 }
