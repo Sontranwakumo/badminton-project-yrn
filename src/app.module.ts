@@ -16,7 +16,9 @@ import { BranchesModule } from "./v1/branches/branches.module.js";
 import { OrderFormsModule } from './v1/order-forms/order-forms.module.js';
 import { OffScheduleModule } from './v1/off_schedule/off_schedule.module.js';
 import { OpenScheduleModule } from './v1/open_schedule/open_schedule.module.js';
+
 import { DefaultPriceModule } from './v1/default_price/default_price.module.js';
+
 
 @Module({
   imports: [
@@ -44,8 +46,7 @@ import { DefaultPriceModule } from './v1/default_price/default_price.module.js';
     BranchesModule,
     OrderFormsModule,
     OffScheduleModule,
-    OpenScheduleModule,
-    DefaultPriceModule
+    OpenScheduleModule
   ],
   controllers: [],
   providers: [],
