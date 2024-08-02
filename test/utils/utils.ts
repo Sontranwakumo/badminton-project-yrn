@@ -10,7 +10,7 @@ import * as entitiesIndex from '../../src/entities/index.js';
 import { UserRole } from "../../src/commons/enums/UserRole.enum.js";
 import { Branch, CourtInfo, User } from "../../src/entities/index.js";
 import { faker } from "@faker-js/faker";
-import { CreateOrderFormDto } from "src/v1/order-forms/dto/create-order-form.dto.js";
+import { CreateOrderFormDto } from "src/v1/order_forms/dto/create-order-form.dto.js";
 import { format } from 'date-fns';
 const entities = Object.values(entitiesIndex).filter((entity: any) => BaseEntity.isPrototypeOf(entity));
 
