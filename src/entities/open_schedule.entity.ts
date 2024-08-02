@@ -14,6 +14,9 @@ export class OpenSchedule extends BaseEntity{
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column()
+  branch_id: string;
+
   @ManyToOne(() => Branch, (branch) => branch.openSchedules)
   @JoinColumn({ name: 'branch_id' })
   branch: Relation<Branch>;

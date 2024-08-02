@@ -9,7 +9,7 @@ import { DatabaseTestConfigService } from "../../src/config/database-test.config
 import * as entitiesIndex from '../../src/entities/index.js';
 import { UserRole } from "../../src/commons/enums/UserRole.enum.js";
 import { Branch, CourtInfo, User } from "../../src/entities/index.js";
-import { fa, faker } from "@faker-js/faker";
+import { faker } from "@faker-js/faker";
 import { CreateOrderFormDto } from "src/v1/order-forms/dto/create-order-form.dto.js";
 import { format } from 'date-fns';
 const entities = Object.values(entitiesIndex).filter((entity: any) => BaseEntity.isPrototypeOf(entity));
@@ -42,7 +42,7 @@ export async function getSynchronizeConnection() {
   return dataSource;
 }
 
-export async function clearDB(dataSource: DataSource) {
+export async function clearDBAsync(dataSource: DataSource) {
   const entities = dataSource.entityMetadatas;
 
   const truncatePromises = entities.map(entity => {
@@ -53,6 +53,16 @@ export async function clearDB(dataSource: DataSource) {
   });
 
   await Promise.all(truncatePromises);
+}
+
+export async function clearDB(dataSource: DataSource) {
+  const entities = dataSource.entityMetadatas;
+  for (const entity of entities){
+    const repository = dataSource.getRepository(entity.name);
+    await repository.query(
+      `TRUNCATE "${entity.tableName}" RESTART IDENTITY CASCADE;`
+      );
+  }
 }
 
 export function createNestApplication(module: TestingModule): INestApplication {

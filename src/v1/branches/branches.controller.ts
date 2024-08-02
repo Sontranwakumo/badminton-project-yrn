@@ -3,7 +3,7 @@ import { BranchesService } from './branches.service.js';
 import { CreateCourtDto } from './dto/create-court.dto.js';
 import { CreateBranchDto } from './dto/create-branch.dto.js';
 
-@Controller('branches')
+@Controller('v1/branches')
 export class BranchesController {
   constructor(private readonly branchesService: BranchesService) {}
 
@@ -32,4 +32,6 @@ export class BranchesController {
   remove(@Param('id') id: string) {
     return this.branchesService.remove(id);
   }
+
+  // get branch's schedule. branch/:id/schedule
 }
