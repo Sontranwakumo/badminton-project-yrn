@@ -41,7 +41,7 @@ describe('BranchesController', () => {
   it('shoulde create a record', async () => {
     // jest.spyOn(service, 'create')
     const user = await generate_owner();
-    const createdto: CreateBranchDto = {owner_id:user.id,address: 'Le Dinh Ly'};
+    const createdto: CreateBranchDto = {owner_id:user.id,name: 'ledinhly', address: 'Le Dinh Ly'};
     const result = JSON.parse( await controller.create(createdto));
     expect(result.address).toEqual(createdto.address);
   })

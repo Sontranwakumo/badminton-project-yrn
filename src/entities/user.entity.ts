@@ -5,6 +5,7 @@ import {
   Entity,
   Index,
   OneToMany,
+  PrimaryColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { OrderForm } from './order_form.entity.js';
@@ -12,7 +13,7 @@ import { UserRole } from '../../src/commons/enums/UserRole.enum.js';
 
 @Entity()
 export class User extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryColumn('uuid')
   id: string;
 
   @Index()

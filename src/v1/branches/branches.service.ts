@@ -4,16 +4,19 @@ import { CourtInfo } from '../../entities/court_info.entity.js';
 import { CreateBranchDto } from './dto/create-branch.dto.js';
 import { Branch } from '../../../src/entities/branch.entity.js';
 import { User } from '../../../src/entities/user.entity.js';
+import { DefaultPriceService } from '../default_price/default_price.service.js';
 @Injectable()
 export class BranchesService {
-  constructor() {}
+  constructor(private readonly defaultPriceService: DefaultPriceService) {}
 
   async create(branchDto:CreateBranchDto){
     const user = (await User.findOneBy({id:branchDto.owner_id}));
     const branch = new Branch();
     branch.owner = user;
+    branch.name = branchDto.name;
     branch.address = branchDto.address;
     await branch.save();
+    await this.defaultPriceService.createAllWithBranch(branch.id);
     return JSON.stringify(branch);
   }
 

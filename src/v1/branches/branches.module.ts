@@ -13,6 +13,7 @@ import { TimeSlot } from '../../../src/entities/timeslot.entity.js';
 import { User } from '../../../src/entities/user.entity.js';
 import { Comment } from '../../../src/entities/comment.entity.js';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { DefaultPriceModule } from '../default_price/default_price.module.js';
 
 @Module({
   imports: [
@@ -28,7 +29,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       PaymentDetail,
       Comment,
       TimeSlot,
-    ])
+    ]),
+    DefaultPriceModule
   ],
   controllers: [BranchesController],
   providers: [BranchesService],

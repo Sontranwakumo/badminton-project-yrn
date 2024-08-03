@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import request from 'supertest';
-import { OrderFormsController } from './order-forms.controller.js';
-import { OrderFormsService } from './order-forms.service.js';
+import { OrderFormsController } from './order_forms.controller.js';
+import { OrderFormsService } from './order_forms.service.js';
 import {
   IMPORT_MODULES,
   clearDB,
@@ -10,7 +10,7 @@ import {
   getRandomUser,
   getSynchronizeConnection,
 } from '../../../test/utils/utils.js';
-import { OrderFormsModule } from './order-forms.module.js';
+import { OrderFormsModule } from './order_forms.module.js';
 import { instanceToInstance } from 'class-transformer';
 import { DataSource } from 'typeorm';
 import { User } from '../../entities/user.entity.js';
